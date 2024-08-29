@@ -1,0 +1,44 @@
+package com.zzy.controller;
+
+import com.zzy.request.RegisterAndLoginRequest;
+import com.zzy.result.Result;
+import com.zzy.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("user")
+@Tag(name="user模块")
+public class UserController {
+    @Resource
+    private UserService userService;
+
+    @Operation(summary = "注册用户")
+    @PostMapping("register")
+    public Result register(@RequestBody RegisterAndLoginRequest registerAndLoginRequest){
+        String username = registerAndLoginRequest.getUserName();
+        String password = registerAndLoginRequest.getPassword();
+        if(!wellForm(username,password)){
+            return Result.error("只能由字母和数字组成");
+        }
+        return userService.register(username,password);
+    }
+
+
+    public static boolean wellForm(String username,String password){
+        String regex = "^[0-9a-zA-Z]+$";
+        if(!username.matches(regex)){
+            return false;
+        }
+        if(!password.matches(regex)){
+            return false;
+        }
+        return true;
+    }
+
+}
