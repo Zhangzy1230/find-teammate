@@ -33,6 +33,7 @@
         <druid.version>1.2.23</druid.version>
         <knife4j.version>4.4.0</knife4j.version>
         <redisson.version>3.35.0</redisson.version>
+        <jwt.version>3.18.2</jwt.version>
     </properties>
 
     <dependencyManagement>
@@ -83,7 +84,11 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -153,6 +158,7 @@
             <artifactId>redisson-spring-boot-starter</artifactId>
             <!--            <version>${redisson.version}</version>-->
         </dependency>
+
     </dependencies>
 
     <build>
