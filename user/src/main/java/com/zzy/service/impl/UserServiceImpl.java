@@ -115,6 +115,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Result getUsernameByJWT(String jwt) {
         try {
             String username = JwtGenerator.parseUsername(jwt);
+            RBucket<String> loginBucket = redissonClient.getBucket(LOGIN_KEY + username);
+            String nowJWT = loginBucket.get();
+            if(!nowJWT.equals(jwt)){
+                return Result.error("未登录或者登录状态异常");
+            }
             return Result.ok(username);
         } catch (Exception e) {
             System.out.println(e.getMessage());

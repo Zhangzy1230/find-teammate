@@ -37,11 +37,10 @@ public class UserController {
         }
         return userService.login(username,password);
     }
+
     @Operation(summary = "通过jwt获取用户名，jwt不合法时不行")
     @GetMapping("getUsernameByJWT")
-    public Result getUsernameByJWT(HttpServletRequest httpServletRequest,
-                                   @RequestHeader(value = "jwt",required = true) String jwt){
-//        String jwt = httpServletRequest.getHeader("jwt");
+    public Result getUsernameByJWT(@RequestHeader(value = "jwt",required = true) String jwt){
         return userService.getUsernameByJWT(jwt);
     }
 
