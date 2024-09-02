@@ -5,6 +5,7 @@ import com.zzy.result.Code;
 import com.zzy.result.Result;
 import com.zzy.utils.JwtGenerator;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;  
 import org.springframework.core.Ordered;
@@ -26,15 +27,26 @@ public class CustomHeaderFilter implements GlobalFilter, Ordered {
 
     // 定义要排除的路径列表  登录和注册
     private static final HashSet<String> EXCLUDED_PATHS = new HashSet<>();
+    @Value("${springdoc.api-docs.path}")
+    private String DOC_PATH;
     static {
         EXCLUDED_PATHS.add("/user/login");
+//        EXCLUDED_PATHS.add("/user/user/login");
         EXCLUDED_PATHS.add("/user/register");
+//        EXCLUDED_PATHS.add("/user/user/register");
     }
+
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取请求路径
         String path = exchange.getRequest().getPath().pathWithinApplication().value();
+        String ipAddress = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
+        System.out.println("ip: "+ipAddress+" path: "+path+" doc-path: "+DOC_PATH);
+        //如果是调用文档
+        if(path.contains(DOC_PATH)){
+            return chain.filter(exchange);
+        }
         // 检查路径是否在排除列表中
         if (!EXCLUDED_PATHS.contains(path)) {
             // 如果路径不在排除列表中，则执行过滤逻辑
@@ -59,6 +71,7 @@ public class CustomHeaderFilter implements GlobalFilter, Ordered {
                 };
                 // 替换原始的ServerHttpRequest为修改后的请求
                 ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
+                return chain.filter(mutatedExchange);
             } catch (Exception e) {
                 // 阻断请求，并直接向客户端发送响应
                 ServerHttpResponse response = exchange.getResponse();
@@ -66,10 +79,9 @@ public class CustomHeaderFilter implements GlobalFilter, Ordered {
                 // 注意：这里只是设置了状态码，没有设置响应体。如果你需要设置响应体，可以进一步操作response对象
                 // 由于我们想要“不放行”，即不继续执行过滤器链，所以我们直接返回一个空的Mono<Void>
                 // 实际上，这里返回的是一个已完成的Mono，表示操作已完成，不需要继续执行后续步骤
+                System.out.println("抛弃了一个请求");
                 return Mono.empty();
             }
-            String ipAddress = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-            System.out.println("ip: "+ipAddress+" path: "+path);
         }
         // 继续过滤器链  
         return chain.filter(exchange);

@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping()
 @Tag(name="user模块")
 public class UserController {
     @Resource
