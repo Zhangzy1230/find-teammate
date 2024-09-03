@@ -9,6 +9,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/global-exception-handler/pom.xml" />
         <option value="$PROJECT_DIR$/mysql-module/pom.xml" />
         <option value="$PROJECT_DIR$/redis-module/pom.xml" />
       </set>

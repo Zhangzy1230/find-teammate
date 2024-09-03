@@ -12,8 +12,6 @@
         <module>public</module>
         <module>user</module>
         <module>gateway</module>
-        <!--        <module>mysql-module</module>-->
-<!--        <module>redis-module</module>-->
     </modules>
 
 <!--    <parent>-->
@@ -105,11 +103,6 @@
     </dependencyManagement>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.github.xiaoymin</groupId>-->
-<!--            <artifactId>knife4j-gateway-spring-boot-starter</artifactId>-->
-<!--            <version>${knife4j-gateway.version}</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

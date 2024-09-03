@@ -44,6 +44,12 @@ public class UserController {
         return userService.getUsernameByJWT(jwt);
     }
 
+    @Operation(summary = "测试全局异常处理器")
+    @GetMapping("test/exception")
+    public Result testException(){
+        int i = 1/0;
+        return Result.ok(null);
+    }
 
     public static boolean wellForm(String username,String password){
         if(username == null || password == null){

@@ -9,17 +9,15 @@
 1. jwt认证
 2. 统一返回值
 3. 全局异常处理器
-4. 拦截器
-5. 流式编程、lambda表达式
-6. nacos服务注册与发现，分布式配置中心
-7. openfeign服务调用、负载均衡
-8. seata分布式事务
-9. sentinel服务熔断、降级、监控
-10. micrometer tracing服务链路追踪
-11. gateway服务网关
-12. redisson分布式锁，防止注册相同账号
-13. docker部署
-14. knife4j、swagger接口文档
+4. 流式编程、lambda表达式
+5. nacos服务注册与发现，分布式配置中心
+6. openfeign服务调用、负载均衡
+7. seata分布式事务
+8. sentinel服务熔断、降级、监控
+9. micrometer tracing服务链路追踪
+10. gateway服务网关
+11. redisson分布式锁，防止注册相同账号
+12. knife4j、swagger接口文档
 15. 布隆过滤器
 
 ## 1 需求分析

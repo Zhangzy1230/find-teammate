@@ -20,7 +20,6 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-<!--            <version>${jwt.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
