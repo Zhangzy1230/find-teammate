@@ -25,21 +25,18 @@ knife4j:
 #       排除不需要聚合的服务（可选）
 #      excluded-services:
 #        - gateway-service
-server:
-  port: 8080
-spring:
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true # 启用服务发现和路由功能
-          lower-case-service-id: true # 使用小写服务ID
-      routes:
-        - id: user
-          uri: lb://user
-          predicates:
-            - Path=/user/**
-#        - id: global-exception-handler
-#          uri: lb://global-exception-handler
+#server:
+#  port: 8080
+#spring:
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true # 启用服务发现和路由功能
+#          lower-case-service-id: true # 使用小写服务ID
+#      routes:
+#        - id: user
+#          uri: lb://user
 #          predicates:
-#            - Path=/global-exception-handler/**
+#            - Path=/user/**
+
