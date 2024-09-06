@@ -27,9 +27,12 @@ public class UserController {
         if(!wellForm(username,password)){
             return Result.error("只能由字母和数字组成");
         }
+        //布隆过滤器
+        if(userService.usernameInBloomFilter(username)){
+            return Result.error("用户名存在（布隆过滤器）");
+        }
         return userService.register(username,password);
     }
-    //TODO:布隆过滤器，筛查用户名
     @Operation(summary = "用户登录")
     @PostMapping("login")
     @SentinelResource(value = "login",blockHandlerClass = UserBlock.class,blockHandler = "loginBlockHandler")
@@ -38,6 +41,10 @@ public class UserController {
         String password = registerAndLoginRequest.getPassword();
         if(!wellForm(username,password)){
             return Result.error("只能由字母和数字组成");
+        }
+        //布隆过滤器
+        if(!userService.usernameInBloomFilter(username)){
+            return Result.error("用户名不存在（布隆过滤器）");
         }
         return userService.login(username,password);
     }

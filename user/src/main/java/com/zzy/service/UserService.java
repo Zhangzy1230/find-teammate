@@ -14,4 +14,6 @@ public interface UserService extends IService<User> {
     //登录，重新登录直接返回redis里面的值
     Result login(String username, String password);
     Result getUsernameByJWT(String jwt);
+    boolean usernameInBloomFilter(String username);
+    boolean addUsernameToBloomFilter(String username);
 }
