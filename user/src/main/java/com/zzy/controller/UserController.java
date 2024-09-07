@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping()
-@Tag(name="user模块")
+@Tag(name="user")
 public class UserController {
     @Resource
     private UserService userService;
@@ -63,6 +63,8 @@ public class UserController {
         int i = 1/0;
         return Result.ok(null);
     }
+
+
 //    blockHandler / blockHandlerClass: blockHandler 对应处理 BlockException 的函数名称，可选项。
 //    blockHandler 函数访问范围需要是 public，返回类型需要与原方法相匹配，参数类型需要和原方法相匹配并且最后加一个额外的参数，类型为 BlockException。
 //    blockHandler 函数默认需要和原方法在同一个类中。

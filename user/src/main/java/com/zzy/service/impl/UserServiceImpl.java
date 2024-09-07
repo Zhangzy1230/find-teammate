@@ -154,6 +154,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         usernameBloomFilter = redissonClient.getBloomFilter(USERNAME_BLOOM);
         //这里我们约定好，先写死
         usernameBloomFilter.tryInit(10000L,0.1);
+//        usernameBloomFilter.add("admin");
+//        usernameBloomFilter.add("zzy");
+//        usernameBloomFilter.add("zzz");
+//        usernameBloomFilter.add("zzzz");
+//        usernameBloomFilter.add("zzy123");
+
     }
 
 }

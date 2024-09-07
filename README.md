@@ -80,7 +80,7 @@ user_label
 | 字段        | 类型     | 备注       |
 | ----------- | -------- | ---------- |
 | id          | int      | 主键       |
-| user_id     | int      | 非空       |
+| user_id     | int      | 非空，索引 |
 | label_id    | int      | 非空，索引 |
 | create_time | datetime |            |
 | update_time | datetime |            |

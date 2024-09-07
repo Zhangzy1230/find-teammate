@@ -16,4 +16,5 @@ public interface UserService extends IService<User> {
     Result getUsernameByJWT(String jwt);
     boolean usernameInBloomFilter(String username);
     boolean addUsernameToBloomFilter(String username);
+
 }

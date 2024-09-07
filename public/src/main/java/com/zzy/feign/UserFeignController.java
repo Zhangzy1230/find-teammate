@@ -24,4 +24,6 @@ public interface UserFeignController {
     @GetMapping("test/exception")
     public Result testException();
 
+
+
 }
