@@ -2,6 +2,7 @@ package com.zzy.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zzy.domain.User;
+import com.zzy.dto.UserDTO;
 import com.zzy.result.Result;
 
 /**
@@ -13,7 +14,7 @@ public interface UserService extends IService<User> {
     Result register(String username, String password);
     //登录，重新登录直接返回redis里面的值
     Result login(String username, String password);
-    Result getUsernameByJWT(String jwt);
+    Result<UserDTO> getUserByJWT(String jwt);
     boolean usernameInBloomFilter(String username);
     boolean addUsernameToBloomFilter(String username);
 

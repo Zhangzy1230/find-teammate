@@ -3,6 +3,7 @@ package com.zzy.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zzy.domain.User;
+import com.zzy.dto.UserDTO;
 import com.zzy.mapper.UserMapper;
 import com.zzy.result.Result;
 import com.zzy.service.UserService;
@@ -116,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Result getUsernameByJWT(String jwt) {
+    public Result<UserDTO> getUserByJWT(String jwt) {
         try {
             String username = JwtGenerator.parseUsername(jwt);
             RBucket<String> loginBucket = redissonClient.getBucket(LOGIN_KEY + username);
@@ -124,7 +125,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             if(!nowJWT.equals(jwt)){
                 return Result.error("未登录或者登录状态异常");
             }
-            return Result.ok(username);
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getUserName,username);
+            User user = userMapper.selectOne(queryWrapper);
+            return Result.ok(user.toUserDTO());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -154,11 +158,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         usernameBloomFilter = redissonClient.getBloomFilter(USERNAME_BLOOM);
         //这里我们约定好，先写死
         usernameBloomFilter.tryInit(10000L,0.1);
-//        usernameBloomFilter.add("admin");
-//        usernameBloomFilter.add("zzy");
-//        usernameBloomFilter.add("zzz");
-//        usernameBloomFilter.add("zzzz");
-//        usernameBloomFilter.add("zzy123");
+        usernameBloomFilter.add("admin");
+        usernameBloomFilter.add("zzy");
+        usernameBloomFilter.add("zzz");
+        usernameBloomFilter.add("zzzz");
+        usernameBloomFilter.add("zzy123");
 
     }
 

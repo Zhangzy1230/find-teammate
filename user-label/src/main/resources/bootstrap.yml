@@ -1,0 +1,17 @@
+# nacos??
+spring:
+  application:
+    name: user-label
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #Nacos????????
+      config:
+        server-addr: localhost:8848 #Nacos????????
+        namespace: public # ????????public
+        group: DEFAULT_GROUP # ??
+        file-extension: yaml #??yaml?????
+
+# nacos?????DataId???????
+# ${spring.application.name}-${spring.profile.active}.${spring.cloud.nacos.config.file-extension}
+# ????DataID?:nacos-config-client-dev.yaml

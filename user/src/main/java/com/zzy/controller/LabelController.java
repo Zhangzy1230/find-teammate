@@ -1,5 +1,8 @@
 package com.zzy.controller;
 
+import com.zzy.domain.Label;
+import com.zzy.dto.LabelDTO;
+import com.zzy.dto.UserDTO;
 import com.zzy.feign.UserFeignController;
 import com.zzy.request.AdminAddLabelRequest;
 import com.zzy.result.Code;
@@ -9,6 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -21,21 +26,13 @@ public class LabelController {
 
     @Operation(summary = "通过名字查询标签")
     @GetMapping("selectByLabelName/{labelName}")
-    public Result selectByLabelName(@RequestHeader(value = "jwt",required = true) String jwt,
-                                    @PathVariable("labelName") String labelName){
-        Result result = userFeignController.getUsernameByJWT(jwt);
-        if(result.getCode().equals(Code.ERROR)){
-            return Result.error("jwt不合法");
-        }
+    public Result<LabelDTO> selectByLabelName(@RequestHeader(value = "jwt",required = true) String jwt,
+                                              @PathVariable("labelName") String labelName){
         return labelService.selectByLabelName(labelName);
     }
     @Operation(summary = "查询所有标签")
     @PostMapping("selectAllLabels")
-    public Result selectAllLabels(@RequestHeader(value = "jwt",required = true) String jwt){
-        Result result = userFeignController.getUsernameByJWT(jwt);
-        if(result.getCode().equals(Code.ERROR)){
-            return Result.error("jwt不合法");
-        }
+    public Result<List<LabelDTO>> selectAllLabels(@RequestHeader(value = "jwt",required = true) String jwt){
         return labelService.selectAllLabels();
     }
 
@@ -43,11 +40,11 @@ public class LabelController {
     @PostMapping("admin/add/label")
     public Result adminAddLabel(@RequestHeader(value = "jwt",required = true) String jwt,
                                 @RequestBody AdminAddLabelRequest adminAddLabelRequest){
-        Result result = userFeignController.getUsernameByJWT(jwt);
+        Result<UserDTO> result = userFeignController.getUserByJWT(jwt);
         if(result.getCode().equals(Code.ERROR)){
             return Result.error("jwt不合法");
         }
-        String username = (String) result.getData();
+        String username = result.getData().getUserName();
         if(!"admin".equals(username)){
             return Result.error("不是管理员");
         }

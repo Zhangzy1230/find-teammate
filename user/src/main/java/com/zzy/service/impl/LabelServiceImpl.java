@@ -3,6 +3,7 @@ package com.zzy.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zzy.domain.Label;
+import com.zzy.dto.LabelDTO;
 import com.zzy.result.Result;
 import com.zzy.service.LabelService;
 import com.zzy.mapper.LabelMapper;
@@ -23,14 +24,18 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label>
     implements LabelService{
     @Resource
     private LabelMapper labelMapper;
-    @Resource
-    private RedissonClient redissonClient;
+//    @Resource
+//    private RedissonClient redissonClient;
     private static final String ALL_LABELS = "all-labels";
 
     @Override
-    public Result selectAllLabels() {
-        RList<String> list = redissonClient.getList(ALL_LABELS);
-        return Result.ok(list.readAll());
+    public Result<List<LabelDTO>> selectAllLabels() {
+//        RList<String> list = redissonClient.getList(ALL_LABELS);
+//        return Result.ok(list.readAll());
+        LambdaQueryWrapper<Label> queryWrapper = new LambdaQueryWrapper<>();
+        List<Label> labelList = labelMapper.selectList(queryWrapper);
+        List<LabelDTO> list = labelList.stream().map(Label::toLabelDTO).toList();
+        return Result.ok(list);
     }
 
     @Override
@@ -41,20 +46,20 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label>
         if(i < 1){
             return Result.error("mysql插入失败");
         }
-        RList<String> list = redissonClient.getList(ALL_LABELS);
-        list.add(labelName);
+//        RList<String> list = redissonClient.getList(ALL_LABELS);
+//        list.add(labelName);
         return Result.ok(label);
     }
 
     @Override
-    public Result<Label> selectByLabelName(String labelName) {
+    public Result<LabelDTO> selectByLabelName(String labelName) {
         LambdaQueryWrapper<Label> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Label::getLabelName,labelName);
         Label label = labelMapper.selectOne(queryWrapper);
         if(label == null){
             return Result.error("没有对应的标签");
         }
-        return Result.ok(label);
+        return Result.ok(label.toLabelDTO());
     }
 }
 

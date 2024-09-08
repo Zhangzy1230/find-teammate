@@ -1,0 +1,67 @@
+package com.zzy.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zzy.domain.UserLabel;
+import com.zzy.feign.UserFeignController;
+import com.zzy.result.Result;
+import com.zzy.service.UserLabelService;
+import com.zzy.mapper.UserLabelMapper;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+/**
+* @author zzy
+* @description 针对表【user_label(用户-标签表)】的数据库操作Service实现
+* @createDate 2024-09-08 19:58:17
+*/
+@Service
+public class UserLabelServiceImpl extends ServiceImpl<UserLabelMapper, UserLabel>
+    implements UserLabelService{
+    @Resource
+    private UserLabelMapper userLabelMapper;
+    @Resource
+    private UserFeignController userFeignController;
+    @Override
+    public Result addLabel(Integer labelId, Integer userId) {
+        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserLabel::getUserId,userId).eq(UserLabel::getLabelId,labelId);
+        UserLabel selectOne = userLabelMapper.selectOne(queryWrapper);
+        if(selectOne != null){
+            return Result.error("不能重复添加");
+        }
+        UserLabel userLabel = new UserLabel();
+        userLabel.setUserId(userId);
+        userLabel.setLabelId(labelId);
+        int insert = userLabelMapper.insert(userLabel);
+        if(insert > 0){
+            return Result.ok(null);
+        }
+        return Result.error("mysql插入失败");
+    }
+
+    @Override
+    public Result deleteLabel(Integer labelId, Integer userId) {
+        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserLabel::getLabelId,labelId).eq(UserLabel::getUserId,userId);
+        int i = userLabelMapper.delete(queryWrapper);
+        if(i > 0){
+            return Result.ok(null);
+        }
+        return Result.error("mysql删除失败");
+    }
+
+    @Override
+    public Result getLabelByUsername(String username) {
+//        userFeignController.
+//        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
+//        queryWrapper
+        return null;
+    }
+
+
+}
+
+
+
+

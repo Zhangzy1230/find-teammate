@@ -24,9 +24,7 @@ public class CustomHeaderFilter implements GlobalFilter, Ordered {
     private String DOC_PATH;
     static {
         EXCLUDED_PATHS.add("/user/login");
-//        EXCLUDED_PATHS.add("/user/user/login");
         EXCLUDED_PATHS.add("/user/register");
-//        EXCLUDED_PATHS.add("/user/user/register");
     }
 
 

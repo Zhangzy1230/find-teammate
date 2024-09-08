@@ -2,6 +2,8 @@ package com.zzy.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.zzy.block.UserBlock;
+import com.zzy.domain.User;
+import com.zzy.dto.UserDTO;
 import com.zzy.request.RegisterAndLoginRequest;
 import com.zzy.result.Result;
 import com.zzy.service.UserService;
@@ -49,12 +51,13 @@ public class UserController {
         return userService.login(username,password);
     }
 
-    @Operation(summary = "通过jwt获取用户名，jwt不合法时不行")
-    @GetMapping("getUsernameByJWT")
+    @Operation(summary = "通过jwt获取用户，jwt不合法时不行")
+    @GetMapping("getUserByJWT")
     @SentinelResource(value = "getUsernameByJWT",blockHandlerClass = UserBlock.class,blockHandler = "getUsernameByJWTBlockHandler")
-    public Result getUsernameByJWT(@RequestHeader(value = "jwt",required = true) String jwt){
-        return userService.getUsernameByJWT(jwt);
+    public Result<UserDTO> getUserByJWT(@RequestHeader(value = "jwt",required = true) String jwt){
+        return userService.getUserByJWT(jwt);
     }
+
 
     @Operation(summary = "测试全局异常处理器")
     @GetMapping("test/exception")

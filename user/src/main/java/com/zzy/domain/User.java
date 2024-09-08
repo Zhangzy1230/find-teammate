@@ -1,6 +1,7 @@
 package com.zzy.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.zzy.dto.UserDTO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -67,6 +68,16 @@ public class User implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public UserDTO toUserDTO(){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(getUserId());
+        userDTO.setUserName(getUserName());
+        userDTO.setNickname(getNickname());
+        userDTO.setGender(getGender());
+        userDTO.setGrade(getGrade());
+        return userDTO;
+    }
 
     @Override
     public boolean equals(Object that) {
