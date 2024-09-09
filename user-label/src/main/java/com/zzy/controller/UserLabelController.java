@@ -2,6 +2,8 @@ package com.zzy.controller;
 
 import com.zzy.dto.LabelDTO;
 import com.zzy.dto.UserDTO;
+import com.zzy.dto.UserInfo;
+import com.zzy.dto.UserLabelDTO;
 import com.zzy.feign.UserFeignController;
 import com.zzy.result.Code;
 import com.zzy.result.Result;
@@ -10,6 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping()
@@ -48,5 +52,26 @@ public class UserLabelController {
             return labelDTOResult;
         }
         return userLabelService.deleteLabel(labelDTOResult.getData().getLabelId(),userDTOResult.getData().getUserId());
+    }
+
+    @Operation(summary = "通过用户名查询用户的所有标签")
+    @GetMapping("getUserInfoByUsername/{username}")
+    public Result<UserInfo> getUserInfoByUsername(@RequestHeader(value = "jwt",required = true) String jwt,
+                                                  @PathVariable("username") String username){
+        Result<UserDTO> result = userFeignController.getUserByUsername(jwt, username);
+        if(result.getCode().equals(Code.ERROR)){
+            return Result.error("没有此用户");
+        }
+        UserDTO userDTO = result.getData();
+        Result<List<UserLabelDTO>> listResult = userLabelService.getUserLabelByUserId(userDTO.getUserId());
+        if(listResult.getCode().equals(Code.ERROR)){
+            return Result.error("此用户没有标签");
+        }
+        List<UserLabelDTO> data = listResult.getData();
+        List<LabelDTO> labelDTOList = data.stream().map(userLabelDTO -> userFeignController.selectByLabelId(jwt, userLabelDTO.getLabelId()).getData()).toList();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserDTO(userDTO);
+        userInfo.setLabelDTOList(labelDTOList);
+        return Result.ok(userInfo);
     }
 }

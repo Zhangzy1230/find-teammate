@@ -16,4 +16,5 @@ public interface LabelService extends IService<Label> {
     Result<List<LabelDTO>> selectAllLabels();
     Result adminAddLabel(String labelName);
     Result<LabelDTO> selectByLabelName(String labelName);
+    Result<LabelDTO> selectByLabelId(Integer labelId);
 }

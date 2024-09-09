@@ -151,6 +151,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return usernameBloomFilter.add(username);
     }
 
+    @Override
+    public Result<UserDTO> getUserByUsername(String username) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName,username);
+        User user = userMapper.selectOne(queryWrapper);
+        if(user == null){
+            return Result.error("没有此用户");
+        }
+        return Result.ok(user.toUserDTO());
+    }
+
     public synchronized void createUsernameBloomFilter(){
         if(usernameBloomFilter != null){
             return;

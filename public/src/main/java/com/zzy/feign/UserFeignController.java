@@ -1,5 +1,7 @@
 package com.zzy.feign;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.zzy.block.UserBlock;
 import com.zzy.dto.LabelDTO;
 import com.zzy.dto.UserDTO;
 import com.zzy.feign.config.UserConfig;
@@ -27,4 +29,11 @@ public interface UserFeignController {
     public Result<LabelDTO> selectByLabelName(@RequestHeader(value = "jwt",required = true) String jwt,
                                               @PathVariable("labelName") String labelName);
 
+    @GetMapping("getUserByUsername/{username}")
+    public Result<UserDTO> getUserByUsername(@RequestHeader(value = "jwt",required = true) String jwt,
+                                             @PathVariable("username") String username);
+
+    @GetMapping("selectByLabelId/{labelId}")
+    public Result<LabelDTO> selectByLabelId(@RequestHeader(value = "jwt",required = true) String jwt,
+                                            @PathVariable("labelId") Integer labelId);
 }

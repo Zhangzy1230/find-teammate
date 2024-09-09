@@ -3,12 +3,15 @@ package com.zzy.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zzy.domain.UserLabel;
+import com.zzy.dto.UserLabelDTO;
 import com.zzy.feign.UserFeignController;
 import com.zzy.result.Result;
 import com.zzy.service.UserLabelService;
 import com.zzy.mapper.UserLabelMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author zzy
@@ -52,11 +55,14 @@ public class UserLabelServiceImpl extends ServiceImpl<UserLabelMapper, UserLabel
     }
 
     @Override
-    public Result getLabelByUsername(String username) {
-//        userFeignController.
-//        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper
-        return null;
+    public Result<List<UserLabelDTO>> getUserLabelByUserId(Integer userId) {
+        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserLabel::getUserId,userId);
+        List<UserLabel> userLabelList = userLabelMapper.selectList(queryWrapper);
+        if(userLabelList == null || userLabelList.isEmpty()){
+            return Result.error("此用户没有标签");
+        }
+        return Result.ok(userLabelList.stream().map(UserLabel::toUserLabelDTO).toList());
     }
 
 

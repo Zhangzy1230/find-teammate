@@ -1,6 +1,7 @@
 package com.zzy.feign.fallback;
 
 import com.zzy.dto.LabelDTO;
+import com.zzy.dto.UserDTO;
 import com.zzy.feign.UserFeignController;
 import com.zzy.request.RegisterAndLoginRequest;
 import com.zzy.result.Result;
@@ -29,5 +30,15 @@ public class UserFallback implements UserFeignController {
     @Override
     public Result<LabelDTO> selectByLabelName(String jwt,String labelName) {
         return Result.error("selectByLabelName fallback");
+    }
+
+    @Override
+    public Result<UserDTO> getUserByUsername(String jwt, String username) {
+        return Result.error("getUserByUsername fallback");
+    }
+
+    @Override
+    public Result<LabelDTO> selectByLabelId(String jwt, Integer labelId) {
+        return Result.error("selectByLabelId fallback");
     }
 }

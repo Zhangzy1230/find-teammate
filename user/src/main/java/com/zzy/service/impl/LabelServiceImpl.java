@@ -61,6 +61,15 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label>
         }
         return Result.ok(label.toLabelDTO());
     }
+
+    @Override
+    public Result<LabelDTO> selectByLabelId(Integer labelId) {
+        Label label = labelMapper.selectById(labelId);
+        if(label == null){
+            return Result.error("没有此标签");
+        }
+        return Result.ok(label.toLabelDTO());
+    }
 }
 
 

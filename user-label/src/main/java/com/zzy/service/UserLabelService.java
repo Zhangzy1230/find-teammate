@@ -2,7 +2,10 @@ package com.zzy.service;
 
 import com.zzy.domain.UserLabel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zzy.dto.UserLabelDTO;
 import com.zzy.result.Result;
+
+import java.util.List;
 
 /**
 * @author zzy
@@ -12,5 +15,5 @@ import com.zzy.result.Result;
 public interface UserLabelService extends IService<UserLabel> {
     Result addLabel(Integer labelId,Integer userId);
     Result deleteLabel(Integer labelId,Integer userId);
-    Result getLabelByUsername(String username);
+    Result<List<UserLabelDTO>> getUserLabelByUserId(Integer userId);
 }

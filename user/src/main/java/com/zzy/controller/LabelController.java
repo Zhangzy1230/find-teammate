@@ -24,6 +24,13 @@ public class LabelController {
     @Resource
     private UserFeignController userFeignController;
 
+    @Operation(summary = "通过id查询标签")
+    @GetMapping("selectByLabelId/{labelId}")
+    public Result<LabelDTO> selectByLabelId(@RequestHeader(value = "jwt",required = true) String jwt,
+                                              @PathVariable("labelId") Integer labelId){
+        return labelService.selectByLabelId(labelId);
+    }
+
     @Operation(summary = "通过名字查询标签")
     @GetMapping("selectByLabelName/{labelName}")
     public Result<LabelDTO> selectByLabelName(@RequestHeader(value = "jwt",required = true) String jwt,

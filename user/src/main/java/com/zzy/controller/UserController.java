@@ -58,6 +58,14 @@ public class UserController {
         return userService.getUserByJWT(jwt);
     }
 
+    @Operation(summary = "通过用户名获取用户")
+    @GetMapping("getUserByUsername/{username}")
+    @SentinelResource(value = "getUserByUsername",blockHandlerClass = UserBlock.class,blockHandler = "getUserByUsernameBlockHandler")
+    public Result<UserDTO> getUserByUsername(@RequestHeader(value = "jwt",required = true) String jwt,
+                                             @PathVariable("username") String username){
+        return userService.getUserByUsername(username);
+    }
+
 
     @Operation(summary = "测试全局异常处理器")
     @GetMapping("test/exception")
