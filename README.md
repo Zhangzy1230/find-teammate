@@ -29,16 +29,12 @@
   - 修改标签
 - 添加标签（管理员）
 - 搜索
-  - 根据用户搜索他的标签
-  - 根据id搜索用户
-  - 根据队伍搜索队伍标签
-- 队伍
-  - 创建、解散队伍
-  - 加入、退出队伍
-  - 修改队伍标签
+  - 根据用户名搜索用户所有信息（包括标签）
 - 推荐
-  - 根据队伍标签推荐
   - 根据个人标签推荐
+- 给指定用户发送消息（redis，分布式事务：消息表，mq）
+- 查看总发送消息数量（分布式事务：消息数量表，mq）
+- 查看历史消息记录（mq，定时任务清除数据）
 
 ## 2 设计
 
@@ -86,34 +82,30 @@ user_label
 | update_time | datetime |            |
 | is_delete   | tinyint  |            |
 
-#### 2.1.4 队伍表
+#### 2.1.4 消息表
 
-team
+message
 
-| 字段           | 类型     | 备注       |
-| -------------- | -------- | ---------- |
-| team_id        | int      | 主键       |
-| team_name      | varchar  |            |
-| label_class_id | int      | 所属类别id |
-| create_time    | datetime |            |
-| update_time    | datetime |            |
-| is_delete      | tinyint  |            |
+| 字段             | 类型         | 备注     |
+| ---------------- | ------------ | -------- |
+| id               | int          | 主键     |
+| send_username    | varchar(30)  | 索引     |
+| receive_username | varchar(30)  | 索引     |
+| content          | varchar(100) | 消息内容 |
+| send_time        | datetime     |          |
+| is_delete        | tinyint      |          |
 
-### 2.2 项目结构
+#### 2.1.5消息数量表
 
-find-teammate
+message_num
 
-​		public-module
-
-​		user-module
-
-​		admin-module
-
-​		serch-module
-
-​		team-module
-
-​		recommend-module
+| 字段        | 类型        | 备注             |
+| ----------- | ----------- | ---------------- |
+| id          | int         | 主键             |
+| username    | varchar(30) | 唯一，非空，索引 |
+| num         | int         | 消息数量         |
+| update_time | datetime    |                  |
+| is_delete   | tinyint     |                  |
 
 ## 3 技术栈
 
