@@ -162,6 +162,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return Result.ok(user.toUserDTO());
     }
 
+    @Override
+    public Result<UserDTO> getUserByUserId(Integer userId) {
+        User user = userMapper.selectById(userId);
+        if(user == null){
+            return Result.error("没有此用户");
+        }
+        return Result.ok(user.toUserDTO());
+    }
+
     public synchronized void createUsernameBloomFilter(){
         if(usernameBloomFilter != null){
             return;

@@ -18,4 +18,5 @@ public interface UserService extends IService<User> {
     boolean usernameInBloomFilter(String username);
     boolean addUsernameToBloomFilter(String username);
     Result<UserDTO> getUserByUsername(String username);
+    Result<UserDTO> getUserByUserId(Integer userId);
 }

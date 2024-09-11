@@ -41,4 +41,9 @@ public class UserFallback implements UserFeignController {
     public Result<LabelDTO> selectByLabelId(String jwt, Integer labelId) {
         return Result.error("selectByLabelId fallback");
     }
+
+    @Override
+    public Result<UserDTO> getUserByUserId(String jwt, Integer userId) {
+        return Result.error("getUserByUserId fallback");
+    }
 }

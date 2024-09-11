@@ -74,4 +74,37 @@ public class UserLabelController {
         userInfo.setLabelDTOList(labelDTOList);
         return Result.ok(userInfo);
     }
+
+    @Operation(summary = "通过id查询用户的所有标签")
+    @GetMapping("getUserInfoByUserId/{userId}")
+    public Result<UserInfo> getUserInfoByUserId(@RequestHeader(value = "jwt",required = true) String jwt,
+                                                  @PathVariable("userId") Integer userId){
+        Result<UserDTO> result = userFeignController.getUserByUserId(jwt, userId);
+        if(result.getCode().equals(Code.ERROR)){
+            return Result.error("没有此用户");
+        }
+        UserDTO userDTO = result.getData();
+        Result<List<UserLabelDTO>> listResult = userLabelService.getUserLabelByUserId(userDTO.getUserId());
+        if(listResult.getCode().equals(Code.ERROR)){
+            return Result.error("此用户没有标签");
+        }
+        List<UserLabelDTO> data = listResult.getData();
+        List<LabelDTO> labelDTOList = data.stream().map(userLabelDTO -> userFeignController.selectByLabelId(jwt, userLabelDTO.getLabelId()).getData()).toList();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserDTO(userDTO);
+        userInfo.setLabelDTOList(labelDTOList);
+        return Result.ok(userInfo);
+    }
+
+    @Operation(summary = "通过标签id和页码（分页）查询用户")
+    @GetMapping("getUserInfoByLabelIdAndPage/{labelId}/{page}")
+    public Result<List<UserInfo>> getUserInfoByLabelIdAndPage(@RequestHeader("jwt") String jwt,
+                                                       @PathVariable("labelId") Integer labelId,
+                                                       @PathVariable("page") Integer page){
+        Result<List<UserLabelDTO>> userLabelList = userLabelService.getUserInfoByLabelIdAndPage(labelId, page);
+        return Result.ok(userLabelList.getData().stream().map(userLabelDTO -> {
+            Result<UserInfo> userInfoByUserId = getUserInfoByUserId(jwt, userLabelDTO.getUserId());
+            return userInfoByUserId.getData();
+        }).toList());
+    }
 }

@@ -16,4 +16,5 @@ public interface UserLabelService extends IService<UserLabel> {
     Result addLabel(Integer labelId,Integer userId);
     Result deleteLabel(Integer labelId,Integer userId);
     Result<List<UserLabelDTO>> getUserLabelByUserId(Integer userId);
+    Result<List<UserLabelDTO>> getUserInfoByLabelIdAndPage(Integer labelId,Integer page);
 }

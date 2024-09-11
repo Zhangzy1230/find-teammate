@@ -1,6 +1,7 @@
 package com.zzy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zzy.domain.UserLabel;
 import com.zzy.dto.UserLabelDTO;
@@ -73,6 +74,15 @@ public class UserLabelServiceImpl extends ServiceImpl<UserLabelMapper, UserLabel
         if(userLabelList == null || userLabelList.isEmpty()){
             return Result.error("此用户没有标签");
         }
+        return Result.ok(userLabelList.stream().map(UserLabel::toUserLabelDTO).toList());
+    }
+
+    @Override
+    public Result<List<UserLabelDTO>> getUserInfoByLabelIdAndPage(Integer labelId,Integer page) {
+        LambdaQueryWrapper<UserLabel> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserLabel::getLabelId,labelId);
+        Page<UserLabel> myPage = new Page<>(page,2);
+        List<UserLabel> userLabelList = userLabelMapper.selectList(myPage, queryWrapper);
         return Result.ok(userLabelList.stream().map(UserLabel::toUserLabelDTO).toList());
     }
 

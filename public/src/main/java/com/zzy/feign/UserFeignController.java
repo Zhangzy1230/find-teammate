@@ -36,4 +36,9 @@ public interface UserFeignController {
     @GetMapping("selectByLabelId/{labelId}")
     public Result<LabelDTO> selectByLabelId(@RequestHeader(value = "jwt",required = true) String jwt,
                                             @PathVariable("labelId") Integer labelId);
+
+    @GetMapping("getUserByUserId/{userId}")
+    public Result<UserDTO> getUserByUserId(@RequestHeader(value = "jwt",required = true) String jwt,
+                                           @PathVariable("userId") Integer userId);
+
 }

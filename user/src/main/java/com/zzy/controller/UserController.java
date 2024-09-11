@@ -66,6 +66,14 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
+    @Operation(summary = "通过id获取用户")
+    @GetMapping("getUserByUserId/{userId}")
+    @SentinelResource(value = "getUserByUserId",blockHandlerClass = UserBlock.class,blockHandler = "getUserByUserIdBlockHandler")
+    public Result<UserDTO> getUserByUserId(@RequestHeader(value = "jwt",required = true) String jwt,
+                                             @PathVariable("userId") Integer userId){
+        return userService.getUserByUserId(userId);
+    }
+
 
     @Operation(summary = "测试全局异常处理器")
     @GetMapping("test/exception")
