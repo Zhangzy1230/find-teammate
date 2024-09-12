@@ -1,8 +1,5 @@
 package com.zzy.globalFilter;
 
-
-
-
 import com.zzy.utils.JwtGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -26,7 +23,6 @@ public class CustomHeaderFilter implements GlobalFilter, Ordered {
         EXCLUDED_PATHS.add("/user/login");
         EXCLUDED_PATHS.add("/user/register");
     }
-
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
