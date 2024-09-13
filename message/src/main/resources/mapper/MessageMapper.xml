@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzy.mapper.MessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.zzy.domain.Message">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="sendUsername" column="send_username" jdbcType="VARCHAR"/>
+            <result property="receiveUsername" column="receive_username" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="sendTime" column="send_time" jdbcType="TIMESTAMP"/>
+            <result property="state" column="state" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,send_username,receive_username,
+        content,send_time,state
+    </sql>
+</mapper>

@@ -1,9 +1,6 @@
 package com.zzy.exceptionhandler;
 
-import com.zzy.feign.RocketMQFeignController;
-import com.zzy.request.ExceptionRequest;
 import com.zzy.result.Result;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

@@ -15,6 +15,10 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+spring:
+  main:
+    #允许存在多个Feign调用相同Service的接口
+    allow-bean-definition-overriding: true
 #rocketmq:
 #  name-server: 127.0.0.1:9876  # RocketMQ NameServer地址
 #  producer:

@@ -1,7 +1,7 @@
 # nacos??
 spring:
   application:
-    name: rocketmq-server
+    name: message
   cloud:
     nacos:
       discovery:
