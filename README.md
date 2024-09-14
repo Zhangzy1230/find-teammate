@@ -17,7 +17,7 @@
 9. redisson分布式锁，防止注册相同账号
 10. knife4j、swagger接口文档
 11. 布隆过滤器
-12. rocketmq
+12. rocketmq、序列化(主题不能是"message")
 13. seata分布式事务
 14. mybatis-plus
 
@@ -114,3 +114,6 @@ message_num
 ![image-20240826093133186](C:\Users\zzy\AppData\Roaming\Typora\typora-user-images\image-20240826093133186.png)
 
 ![image-20240826094356295](C:\Users\zzy\AppData\Roaming\Typora\typora-user-images\image-20240826094356295.png)
+
+## 4 踩过的坑
+

@@ -1,5 +1,6 @@
 package com.zzy.consumer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zzy.dto.MessageDTO;
 import com.zzy.produer.ProducerService;
 import com.zzy.request.MessageRequest;
@@ -11,6 +12,7 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -20,8 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service  
-//@RocketMQMessageListener(topic = "exception", consumerGroup = "my-consumer-group", selectorExpression = "*", consumeMode = ConsumeMode.CONCURRENTLY)
-@RocketMQMessageListener(topic = ProducerService.MESSAGE_TOPIC, consumerGroup = "my-consumer-group")
+@RocketMQMessageListener(topic = ProducerService.MESSAGE_TOPIC, consumerGroup = "my-consumer-group", selectorExpression = "*", consumeMode = ConsumeMode.CONCURRENTLY)
 public class ConsumerService implements RocketMQListener<MessageRequest> {
     public static final String MESSAGE = "message:";
     @Resource
