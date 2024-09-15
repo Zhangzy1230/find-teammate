@@ -3,6 +3,7 @@ package com.zzy.service;
 import com.zzy.domain.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zzy.request.MessageRequest;
+import com.zzy.result.Result;
 
 /**
 * @author zzy
@@ -12,4 +13,5 @@ import com.zzy.request.MessageRequest;
 public interface MessageService extends IService<Message> {
     void addMessage(MessageRequest messageRequest,String uuid);
     void setState(String uuid);
+    Result history(String myUsername,String targetUsername);
 }

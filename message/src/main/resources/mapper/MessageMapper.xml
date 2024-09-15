@@ -17,4 +17,14 @@
         uuid,send_username,receive_username,
         content,send_time,state
     </sql>
+
+    <select id="history" resultType="com.zzy.domain.Message">
+        SELECT * FROM message
+        WHERE (send_username = #{username1} AND receive_username = #{username2})
+           OR (send_username = #{username2} AND receive_username = #{username1})
+    </select>
+
+    <delete id="deleteAll">
+        DELETE FROM message
+    </delete>
 </mapper>

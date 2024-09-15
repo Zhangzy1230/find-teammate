@@ -29,8 +29,6 @@ public class MessageNumServiceImpl extends ServiceImpl<MessageNumMapper, Message
         if(messageNum == null){
             messageNum = new MessageNum();
             messageNum.setUsername(username);
-//            messageNum.setNum();
-//            messageNum.setUpdateTime();
             messageNumMapper.insert(messageNum);
         }else{
             messageNum.setNum(messageNum.getNum()+1);

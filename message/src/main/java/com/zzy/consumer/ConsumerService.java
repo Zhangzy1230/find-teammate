@@ -22,7 +22,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service  
-@RocketMQMessageListener(topic = ProducerService.MESSAGE_TOPIC, consumerGroup = "my-consumer-group", selectorExpression = "*", consumeMode = ConsumeMode.CONCURRENTLY)
+@RocketMQMessageListener(topic = ProducerService.MESSAGE_TOPIC, consumerGroup = "my-consumer-group", consumeMode = ConsumeMode.CONCURRENTLY)
+//@RocketMQMessageListener(topic = ProducerService.MESSAGE_TOPIC, consumerGroup = "my-consumer-group", selectorExpression = "*", consumeMode = ConsumeMode.CONCURRENTLY)
 public class ConsumerService implements RocketMQListener<MessageRequest> {
     public static final String MESSAGE = "message:";
     @Resource
@@ -33,7 +34,7 @@ public class ConsumerService implements RocketMQListener<MessageRequest> {
     private RedissonClient redissonClient;
     @Override  
     public void onMessage(MessageRequest messageRequest) {
-        System.out.println("收到消息");
+        System.out.println("收到消息"+LocalDate.now().toString());
         String uuid = UUID.randomUUID().toString();
         messageService.addMessage(messageRequest,uuid);
         MessageDTO messageDTO = new MessageDTO();

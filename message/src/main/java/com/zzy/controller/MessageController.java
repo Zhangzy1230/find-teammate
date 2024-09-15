@@ -26,6 +26,8 @@ public class MessageController {
     private RedissonClient redissonClient;
     @Resource
     private UserFeignController userFeignController;
+    @Resource
+    private MessageService messageService;
     @Operation(summary = "发送消息")
     @PostMapping("send")
     public Result send(@RequestBody MessageRequest messageRequest,
@@ -43,5 +45,13 @@ public class MessageController {
         List<MessageDTO> messageDTOS = list.readAll();
         list.removeAll(messageDTOS);
         return Result.ok(messageDTOS);
+    }
+
+    @Operation(summary = "查看我与某人的历史消息")
+    @GetMapping("history/{targetUsername}")
+    public Result history(@RequestHeader("jwt") String jwt,
+                          @PathVariable("targetUsername") String targetUsername){
+        String username = userFeignController.getUserByJWT(jwt).getData().getUserName();
+        return messageService.history(username,targetUsername);
     }
 }

@@ -20,6 +20,7 @@
 12. rocketmq、序列化(主题不能是"message")
 13. seata分布式事务
 14. mybatis-plus
+15. Spring Framework `@Scheduled`注解，执行定时任务
 
 ## 1 需求分析
 
