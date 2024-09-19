@@ -17,8 +17,7 @@
 9. redisson分布式锁，防止注册相同账号
 10. knife4j、swagger接口文档
 11. 布隆过滤器
-12. rocketmq、序列化(主题不能是"message")
-13. seata分布式事务
+12. rocketmq
 14. mybatis-plus
 15. Spring Framework `@Scheduled`注解，执行定时任务
 
@@ -33,8 +32,8 @@
   - 根据用户名搜索用户所有信息（包括标签）
   
   - 根据标签查询（分页插件）
-- 给指定用户发送消息（mq，redis，分布式事务：消息表）
-- 查看总发送消息数量（mq，分布式事务：消息数量表）
+- 给指定用户发送消息（mq，redis）
+- 查看总发送消息数量（mq）
 - 查看历史消息记录（定时任务清除数据）
 
 ## 2 设计
@@ -115,6 +114,4 @@ message_num
 ![image-20240826093133186](C:\Users\zzy\AppData\Roaming\Typora\typora-user-images\image-20240826093133186.png)
 
 ![image-20240826094356295](C:\Users\zzy\AppData\Roaming\Typora\typora-user-images\image-20240826094356295.png)
-
-## 4 踩过的坑
 
