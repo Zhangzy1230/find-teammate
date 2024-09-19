@@ -1,0 +1,47 @@
+server:
+  port: 8082
+spring:
+ cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8079
+      datasource:
+         ds1:
+           nacos:
+             server-addr: localhost:8848
+             dataId: sentinel
+             groupId: DEFAULT_GROUP
+             data-type: json
+             rule-type: flow
+
+ datasource:
+   type: com.alibaba.druid.pool.DruidDataSource
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/find_teammate?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+   username: root
+   password: root
+   druid:
+     initial-size: 5
+     min-idle: 5
+     max-active: 10
+     max-wait: 10000
+     time-between-eviction-runs-millis: 60000
+     min-evictable-idle-time-millis: 300000
+     validation-query: SELECT 1 FROM DUAL
+     test-while-idle: true
+     test-on-borrow: false
+     test-on-return: false
+     pool-prepared-statements: true
+     max-pool-prepared-statement-per-connection-size: 20
+     filter:
+       stat:
+         merge-sql: true
+         slow-sql-millis: 5000
+
+redis:
+ ip: redis://122.152.215.133:6379
+ password: 123456
+ connection-pool-size: 10
+ connection-minimum-idle-size: 5
+ connection-timeout: 3000
