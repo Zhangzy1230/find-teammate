@@ -9,6 +9,7 @@ import com.zzy.service.MessageService;
 import com.zzy.mapper.MessageMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.Date;

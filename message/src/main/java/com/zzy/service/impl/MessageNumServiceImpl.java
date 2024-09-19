@@ -7,8 +7,10 @@ import com.zzy.service.MessageNumService;
 import com.zzy.mapper.MessageNumMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
 * @author zzy

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledTasks {  
     @Resource
     private MessageMapper messageMapper;
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void reportCurrentTime() {  
         messageMapper.deleteAll();
     }  

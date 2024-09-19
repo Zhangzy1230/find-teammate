@@ -6,15 +6,23 @@ import com.zzy.feign.UserFeignController;
 import com.zzy.produer.ProducerService;
 import com.zzy.request.MessageRequest;
 import com.zzy.result.Result;
+import com.zzy.service.MessageNumService;
 import com.zzy.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+
+import static com.zzy.consumer.ConsumerService.MESSAGE;
 
 @RestController
 @RequestMapping()
@@ -28,6 +36,8 @@ public class MessageController {
     private UserFeignController userFeignController;
     @Resource
     private MessageService messageService;
+    @Resource
+    private MessageNumService messageNumService;
     @Operation(summary = "发送消息")
     @PostMapping("send")
     public Result send(@RequestBody MessageRequest messageRequest,
@@ -41,7 +51,7 @@ public class MessageController {
     @GetMapping("pull")
     public Result pull(@RequestHeader("jwt") String jwt){
         String username = userFeignController.getUserByJWT(jwt).getData().getUserName();
-        RList<MessageDTO> list = redissonClient.getList(ConsumerService.MESSAGE + username);
+        RList<MessageDTO> list = redissonClient.getList(MESSAGE + username);
         List<MessageDTO> messageDTOS = list.readAll();
         list.removeAll(messageDTOS);
         return Result.ok(messageDTOS);
@@ -53,5 +63,32 @@ public class MessageController {
                           @PathVariable("targetUsername") String targetUsername){
         String username = userFeignController.getUserByJWT(jwt).getData().getUserName();
         return messageService.history(username,targetUsername);
+    }
+
+    @Operation(summary = "测试发送消息")
+    @PostMapping("setAndAdd")
+    public Result setAndAdd(@RequestBody MessageRequest messageRequest,
+                            @RequestHeader("jwt") String jwt){
+        try {
+            MessageDTO messageDTO = new MessageDTO();
+            messageDTO.setSendUsername(messageRequest.getSendUsername());
+            messageDTO.setReceiveUsername(messageRequest.getReceiveUsername());
+            messageDTO.setContent(messageRequest.getContent());
+            messageDTO.setSendTime(new Date());
+            RList<MessageDTO> list = redissonClient.getList(MESSAGE + messageRequest.getReceiveUsername());
+            list.add(messageDTO);
+            list.expire(1, TimeUnit.DAYS);
+            String uuid = UUID.randomUUID().toString();
+            messageService.addMessage(messageRequest,uuid);
+            return setAndAdd(uuid,messageRequest);
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
+
+    public Result setAndAdd(String uuid,MessageRequest messageRequest){
+        messageService.setState(uuid);
+        messageNumService.add(messageRequest.getSendUsername());
+        return Result.ok(null);
     }
 }
